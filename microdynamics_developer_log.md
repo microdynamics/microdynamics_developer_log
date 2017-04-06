@@ -253,12 +253,12 @@ myyerrol
 myyerrol
 
 **完成：**<br>
-1、完成myCrazyfile无人机的打板工作。<br>
+1、完成MyCrazyfile无人机的打板工作。<br>
 2、购买了足够的元器件。<br>
 
 **计划：**<br>
-1、学习myCrazyfile无人机的PCB工程并在它的基础上做一定的修改。<br>
-2、尽可能快地完成myCrazyfile无人机的焊接工作。<br>
+1、学习MyCrazyfile无人机的PCB工程并在它的基础上做一定的修改。<br>
+2、尽可能快地完成MyCrazyfile无人机的焊接工作。<br>
 
 ---
 ## 2017.03.05
@@ -379,3 +379,30 @@ myyerrol
 1、继续将之前开发的飞控程序移植到Uubntu上。<br>
 2、开始制定无人机的数据通信协议。<br>
 3、最后重新再对MyCrazyfile无人机进行一次焊接。<br>
+
+---
+## 2017.04.06
+
+**作者：**<br>
+myyerrol
+
+**完成：**<br>
+1、完成对Ubuntu下飞控开发环境的配置。<br>
+2、学习了链接脚本的基本知识。<br>
+
+**问题：**<br>
+1、使用**make all**命令进行编译、链接的时候，编译器报错：**undefined reference to `_sbrk'**<br>
+2、在解决完问题1后再次编译整个工程，编译器依然报错：**undefined reference to `end'**。<br>
+
+**解决：**<br>
+1、在Google上搜索了一番，找到了解决方法。报错的原因是没有在链接的时候指定系统调用**syscalls**，因此只需要在链接参数中添加**--specs=rdimon.specs**就可以了。<br>
+2、出现这个问题的原因主要是**end**符号没有被定义在堆的起始部分。解决方法是修改链接脚本文件，在**.bss**或者**.BSS**段后面添加如下的内容即可：<br>
+
+```text
+. = ALIGN(4);
+end = . ;
+```
+
+**计划：**<br>
+1、继续学习飞控代码，其中要重点理解2.4G无线通讯协议。<br>
+2、准备接下来对MyCrazyfile无人机的焊接工作。
