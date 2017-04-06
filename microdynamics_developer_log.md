@@ -391,8 +391,8 @@ myyerrol
 2、学习了链接脚本的基本知识。<br>
 
 **问题：**<br>
-1、使用**make all**命令进行编译、链接的时候，编译器报错：**undefined reference to `_sbrk'**<br>
-2、在解决完问题1后再次编译整个工程，编译器依然报错：**undefined reference to `end'**。<br>
+1、使用**make all**命令进行编译、链接的时候，编译器报错：**undefined reference to \`_sbrk'**<br>
+2、在解决完问题1后再次编译整个工程，编译器依然报错：**undefined reference to \`end'**。<br>
 
 **解决：**<br>
 1、在Google上搜索了一番，找到了解决方法。报错的原因是没有在链接的时候指定系统调用**syscalls**，因此只需要在链接参数中添加**--specs=rdimon.specs**就可以了。<br>
