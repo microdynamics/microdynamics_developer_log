@@ -395,7 +395,7 @@ myyerrol
 2、在解决完问题1后再次编译整个工程，编译器依然报错：**undefined reference to \`end'**。<br>
 
 **解决：**<br>
-1、在Google上搜索了一番，找到了解决方法。报错的原因是没有在链接的时候指定系统调用**syscalls**，因此只需要在链接参数中添加下面例子中的参数就可以：<br>
+1、在Google上搜索了一番，找到了解决方法。报错的原因是没有在链接的时候指定系统调用**syscalls**，因此只需要在链接参数中添加**specs**选项就可以：<br>
 
 ```makefile
 arm-none-eabi-gcc --specs=rdimon.specs $(OTHER_LINK_OPTIONS)
