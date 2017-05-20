@@ -507,3 +507,100 @@ myyerrol
 1、解决**printf**无法打印格式化数据的问题。<br>
 2、优化无人机上位机调试界面。<br>
 3、将OpenCV和CUDA代码嵌入到无人机上位机调试软件中去。<br>
+
+---
+### 2017.05.17
+
+**作者：**<br>
+myyerrol
+
+**完成：**<br>
+1、解决了printf无法打印格式化数据的问题。<br>
+2、优化了无人机上位机调试软件，确保串口通信没有问题。<br>
+
+**问题：**<br>
+1、printf无法打印格式化数据。<br>
+
+**解决：**<br>
+1、我在Google上搜索一段时间之后，终于找到了完美的解决办法了。根据大神的解释，因为GCC工具链使用了Newlib C库，而这个库本身并不是为微控制器开发的，所以当我们使用OS依赖的函数时（比如printf），我们就会面对一些Stubs（Stubs被称为操作系统提供的系统调用函数）。微控制器本身没有OS，所以这些函数会由于dead-end而出现编译错误。为了解决这个问题，我们需要自己重新实现一些系统调用函数，其中最重要的是\_write()、\_read()和\_sbrk()。\_write()函数负责写字符串到stdout和stderr中去，\_read()则是从stdin中读取数据，\_sbrk()主要是为那些需要知道动态内存是否与堆栈相冲突的malloc相关函数提供服务。很明显，只要在\_read()和\_write()函数中实现我们自己的比特发送和接收函数，我们就可以调用printf()函数来发送格式化字符串流到USART中去。因此添加以下代码到工程中去：
+
+```c
+#include <errno.h>
+#include <sys/unistd.h>
+
+void USART_PutChar(u8 ch)
+{
+    USART_SendData(USART1, (u8)ch);
+    while(USART_GetFlagStatus(USART1, USART_FLAG_TC) == RESET);
+}
+
+u8 USART_GetChar(void)
+{
+    while (USART_GetFlagStatus(USART1, USART_FLAG_RXNE) == RESET);
+    return (u8)USART_ReceiveData(USART1);
+}
+
+int _read(int file, char *ptr, int len)
+{
+    int i;
+    int num = 0;
+    char ch;
+
+    switch (file)
+    {
+        case STDIN_FILENO:
+        {
+            for (i = 0; i < len; i++)
+            {
+                ch = USART_GetChar();
+                *ptr++ = ch;
+                num++;
+            }
+            break;
+        }
+        default:
+        {
+            errno = EBADF;
+            return -1;
+        }
+    }
+
+    return num;
+}
+
+int _write(int file, char *ptr, int len)
+{
+    int i;
+
+    switch (file)
+    {
+        case STDOUT_FILENO:
+        {
+            for (i = 0; i < len; i++)
+            {
+                USART_PutChar(*ptr++ & (u16)0x01FF);
+            }
+            break;
+        }
+        case STDERR_FILENO:
+        {
+            for (i = 0; i < len; i++)
+            {
+                USART_PutChar(*ptr++ & (u16)0x01FF);
+            }
+            break;
+        }
+        default:
+        {
+            errno = EBADF;
+            return -1;
+        }
+    }
+
+    return len;
+}
+```
+
+**计划：**<br>
+1、使用printf函数来调试串口通信部分代码。<br>
+2、继续优化上位机调试软件。<br>
