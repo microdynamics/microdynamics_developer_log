@@ -613,8 +613,8 @@ maksyuki
 
 **完成：**<br>
 1、完成主机Linux交叉编译环境的构建，完成Xilinx Vivado2015.4及SDK的安装，对所购买的ZYNQ-7000评估板进行简单测试并通过。<br>
-2、完成microdynamics.cc域名的申请，完成[新主站](www.microregister.youhaovip.com)的建立工作，为下一步设计网站打下基础。<br>
-3、为了能够更加专业、高效地管理收支，团队财务收支系统开始迁移到[随手记](www.feidee.com)上，并完成以前收支数据的导入工作。
+2、完成microdynamics.cc域名的申请，完成[新主站](http://microregister.youhaovip.com)的建立工作，为下一步设计网站打下基础。<br>
+3、为了能够更加专业、高效地管理收支，团队财务收支系统开始迁移到[随手记](http://www.feidee.com)上，并完成以前收支数据的导入工作。
 
 **计划：**<br>
 1、开始下一代硬件项目的设计工作，内部开发代号为 **[Utopia]**。<br>
