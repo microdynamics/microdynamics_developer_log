@@ -21,6 +21,7 @@ maksyuki
 |STM        | TX    | RX    |
 |PC(CP2102) | RX    | TX    |
 |nRF        | RX    | TX    |
+
 此时当nRF向STM发送数据时，为了给Breeze无人机供电而连接的USB使得nRF和CP2102的TX相连，可能此时CP2102的TX口的电平被CP2102强制置高或置低，使得nRF串口ERROR寄存器返回错误，导致无法通信。
 
 **计划：**<br>
