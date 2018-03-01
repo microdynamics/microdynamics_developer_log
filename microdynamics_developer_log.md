@@ -1,5 +1,33 @@
 # MicroDynamics开发者日志
 
+## 2018.03.01
+
+**作者：**<br>
+maksyuki
+
+**完成：**<br>
+1、完成breeze无人机STM主控芯片常用外设驱动(System Clock、Delay、SysTick Timer、USART和IIC)和外设模块(LED和PWM)的编写和测试工作。<br>
+2、完成Breeze无人机nRF芯片USART和GPIO部分驱动的编写，实现了STM和nRF芯片之间的串口通信。<br>
+3、完成Breeze无人机电机固定座和电池底座的机械结构设计，3D打印样板后电机固定座固定效果理想，只需做微小修改即可达到要求，电池底座尺寸合适，但厚度和高度偏大，偏高，还需进一步修改。
+
+**问题：**<br>
+1、STM和nRF芯片能能分别和PC进行串口通信，但是尝试两者之间进行通信时，STM能收发数据，但是nRF只能收，不能发。<br>
+
+**解决：**<br>
+1、在尝试对Nordic官方SDK提供的例程(\nRF5_SDK_12.3.0_d7731ad\examples\peripheral\uart\pca10028\blank\arm5_no_packs\uart_pca10028.uvprojx)和艾克姆nRF51822开发板的串口例程进行修改后仍旧无法实现nRF向STM的数据传送，后来尝试上网搜索后还是无法解决。在进行JTAG调试时发现nRF在发送数据时寄存器USART0->EVENTS_ERROR被强制置1，表示发生硬件错误。最后是猜想USB转串口芯片可能会影响STM和nRF两者之间的通信，在尝试使用锂电池供电而不使用USB供电后问题解决。感觉可能是因为在测试时Breeze无人机是通过micro USB线取电，而两个芯片的串口是在直接相连后再接到CP2102上的，即实现STM和nRF串口通信时的硬件连线方式为(STM的TX和CP2102，nRF的RX相连，STM的RX和CP2102，nRF的TX相连)：
+
+|DEVICE     | USART | USART |
+|-----------|-------|-------|
+|STM        | TX    | RX    |
+|PC(CP2102) | RX    | TX    |
+|nRF        | RX    | TX    |
+此时当nRF向STM发送数据时，为了给Breeze无人机供电而连接的USB使得nRF和CP2102的TX相连，可能此时CP2102的TX口的电平被CP2102强制置高或置低，使得nRF串口ERROR寄存器返回错误，导致无法通信。
+
+**计划：**<br>
+1、读取MPU6050经过DMP处理后的姿态角数据和MS5611的高度数据。<br>
+2、开发nRF电源管理部分的驱动。<br>
+3、改进电机和电池底座的设计。<br>
+
 ## 2018.02.04
 
 **作者：**<br>
