@@ -1,5 +1,18 @@
 # MicroDynamics开发者日志
 
+## 2019.08.19
+
+**作者：**<br>
+maksyuki
+
+**完成：**<br>
+1、完成IMU子板原理图和PCB设计。<br>
+2、完成ESC子板原理图和PCB设计。<br>
+
+**计划：**<br>
+1、对IMU和ESC的设计进行检查，输出IMU和ESC的生产资料和BOM表。<br>
+2、开始设计SOPHUM_PRO_1的原理图。<br>
+
 ## 2019.04.23
 
 **作者：**<br>
