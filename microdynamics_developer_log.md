@@ -1,5 +1,18 @@
 # MicroDynamics开发者日志
 
+## 2020.04.02
+
+**作者：**<br>
+maksyuki
+
+**完成：**<br>
+1、修改SOPHUM_PRO_V1的POWER部分锂电池XT30插座连接处的问题。<br>
+2、修改同样POWER部分VCC_1V5的输入端3.3nF电容的连接问题。<br>
+
+**计划：**<br>
+1、对SOPHUM_PRO_V1的POWER再次检查。<br>
+2、开始SOPHUM_PRO_V1进行布线。<br>
+
 ## 2020.03.22
 
 **作者：**<br>
